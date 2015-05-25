@@ -22,6 +22,13 @@ for line in r.text.split('<TR><TD ALIGN="CENTER">')[1:]:  # remove beginning of 
     # replace double-quotes with single-quotes
     description = description.replace('"', "'")
 
+    # replace colons (used as delimiter) with equals sign
+    description = description.replace(':', '=')
+
+    # remove newlines
+    description = description.replace('\n', '')
+    description = description.replace('\r', '')
+
     # special rule for final part
     if rank == 3000:
         description = description[0:-32]
@@ -39,7 +46,7 @@ for chunk in [0, 500, 1000, 1500, 2000, 2500]:
         for row in dataset:
             if chunk < row['rank'] < chunk + 500:
                 hanzi_file.write(row['hanzi'])
-                hanzi_file.write('; "')
+                hanzi_file.write(': ')
                 hanzi_file.write(row['description'])
-                hanzi_file.write('<BR>rank: ' + str(row['rank']))
-                hanzi_file.write('"\n')
+                hanzi_file.write('<BR><BR>rank = ' + str(row['rank']))
+                hanzi_file.write('\n')
